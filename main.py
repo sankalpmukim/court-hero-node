@@ -1,8 +1,20 @@
 import imp
 from fastapi import FastAPI
 from detect_people.detect_people import DetectPeople
+from dotenv import load_dotenv
+from requests import post
+from os import getenv
+
+load_dotenv()
 
 app = FastAPI()
+
+
+@app.on_event("startup")
+def startup():
+    post(f"{getenv('backed')}/awake", json={"id": getenv('id')})
+    global detect_people
+    detect_people = DetectPeople()
 
 
 @app.get("/")
@@ -12,5 +24,9 @@ def read_root():
 
 @app.get("/detect_people")
 def detect_people():
-    detect_people = DetectPeople()
     return {"detect_people": detect_people.detect_people()}
+
+
+@app.on_event("shutdown")
+def shutdown():
+    post(f"{getenv('backed')}/dead", json={"id": getenv('id')})
