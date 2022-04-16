@@ -12,7 +12,10 @@ app = FastAPI()
 
 @app.on_event("startup")
 def startup():
-    post(f"{getenv('backed')}/awake", json={"id": getenv('id')})
+    try:
+        post(f"{getenv('backend')}/awake", json={"id": getenv('id')})
+    except:
+        pass
     global detect_people
     detect_people = DetectPeople()
 
@@ -29,4 +32,7 @@ def detect_people():
 
 @app.on_event("shutdown")
 def shutdown():
-    post(f"{getenv('backed')}/dead", json={"id": getenv('id')})
+    try:
+        post(f"{getenv('backend')}/awake/dead", json={"id": getenv('id')})
+    except:
+        pass
