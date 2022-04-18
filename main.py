@@ -16,8 +16,8 @@ def startup():
         post(f"{getenv('backend')}/awake", json={"id": getenv('id')})
     except:
         pass
-    global detect_people
-    detect_people = DetectPeople()
+    global dp
+    dp = DetectPeople()
 
 
 @app.get("/")
@@ -27,7 +27,7 @@ def read_root():
 
 @app.get("/detect_people")
 def detect_people():
-    return {"detect_people": detect_people.detect_people()}
+    return {"detect_people": dp.detect_people()}
 
 
 @app.on_event("shutdown")
