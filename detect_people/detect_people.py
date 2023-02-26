@@ -21,7 +21,7 @@ class DetectPeople:
             cv2.VideoWriter_fourcc(*'MJPG'),
             15.,
             (640, 480))
-        cv2.waitKey(0)
+        cv2.waitKey(1)
 
     def detect_people(self):
         # run loop for 15 seconds

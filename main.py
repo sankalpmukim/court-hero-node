@@ -1,4 +1,3 @@
-import imp
 from fastapi import FastAPI
 from detect_people.detect_people import DetectPeople
 from dotenv import load_dotenv
@@ -33,6 +32,8 @@ def detect_people():
 @app.on_event("shutdown")
 def shutdown():
     try:
+        del dp
         post(f"{getenv('backend')}/awake/dead", json={"id": getenv('id')})
     except:
+        print("Error", e)
         pass
