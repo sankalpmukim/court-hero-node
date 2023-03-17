@@ -32,6 +32,7 @@ def detect_people():
 @app.on_event("shutdown")
 def shutdown():
     try:
+        global dp
         del dp
         post(f"{getenv('backend')}/awake/dead", json={"id": getenv('id')})
     except:
