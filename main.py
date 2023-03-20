@@ -36,5 +36,5 @@ def shutdown():
         del dp
         post(f"{getenv('backend')}/awake/dead", json={"id": getenv('id')})
     except:
-        print("Error", e)
+        print("Error")
         pass
