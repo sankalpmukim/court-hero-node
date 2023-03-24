@@ -36,10 +36,11 @@ while True:
         print("node is asleep")
         break
 
-    detector = HumanDetector(write_video=True, display_box=True)
+    detector = HumanDetector(write_video=True, display_box=True, accuracy_factor=0.4 )
     detected = detector.detect_people_timedelta()
     node_logs_ref.add({"people":detected
                        , "created_at":firestore.SERVER_TIMESTAMP}) # type: ignore
+    node_doc_ref.update({"last_updated":firestore.SERVER_TIMESTAMP, "people":detected}) # type: ignore
     print("done")
     sleep(WAIT_TIME)
 
