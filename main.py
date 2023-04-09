@@ -8,7 +8,7 @@ from firebase_admin import firestore, initialize_app
 NODES_COLLECTION = "nodes"
 LOGS_COLLECTION = "logs"
 NODE_ID = "0" # os.getenv("NODE_ID")
-WAIT_TIME = 20
+WAIT_TIME = 10
 
 load_dotenv()
 app = initialize_app()
@@ -36,12 +36,13 @@ while True:
         print("node is asleep")
         break
 
-    detector = HumanDetector(write_video=True, display_box=True, accuracy_factor=0.4 )
+    detector = HumanDetector(write_video=True, display_box=True, accuracy_factor=0.50)
     detected = detector.detect_people_timedelta()
     node_logs_ref.add({"people":detected
                        , "created_at":firestore.SERVER_TIMESTAMP}) # type: ignore
     node_doc_ref.update({"last_updated":firestore.SERVER_TIMESTAMP, "people":detected}) # type: ignore
     print("done")
+    del detector
     sleep(WAIT_TIME)
 
 print("exiting")
