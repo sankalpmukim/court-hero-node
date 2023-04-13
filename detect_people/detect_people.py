@@ -8,7 +8,8 @@ class HumanDetector:
         """Initializes the human detector."""
         self.hog = cv2.HOGDescriptor()
         self.hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
-        cv2.startWindowThread()
+        if display_box:
+            cv2.startWindowThread()
         self.num_iter = num_iter
         self.accuracy_factor = accuracy_factor
         self.seconds = seconds
@@ -86,10 +87,8 @@ class HumanDetector:
                 self.out.write(frame.astype('uint8'))
         print("Finished detecting people")
         self.cap.release()
-        if (num_people_detected*1.0) / (total_iterations*1.0) >= self.accuracy_factor:
-            return True
         print(num_people_detected, total_iterations, self.accuracy_factor)
-        return False
+        return ((num_people_detected*1.0) / (total_iterations*1.0) >= self.accuracy_factor)
 
 if __name__ == "__main__":
     dp = HumanDetector(display_box=True, write_video=True, seconds=10, accuracy_factor=0.1)
